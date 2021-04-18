@@ -148,7 +148,7 @@ class Game {
     // get x from ID of clicked cell
    
     const x = +evt.target.id;
-    //if(isNaN(x)) return; //prevents err throwing if user clicks where not supposed to
+    if(isNaN(x)) return; //prevents err throwing if user clicks where not supposed to
 
     // get next spot in column (if none, ignore click)
     
