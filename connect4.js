@@ -5,19 +5,16 @@
  * board fills (tie)
  */
 
-// const WIDTH = 7;
-// const HEIGHT = 6;
 
-// let currPlayer = 1; // active player: 1 or 2
-// let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 
 class Game {
-  constructor(p1, p2, width = 7, height = 6){
+  constructor(p1 = new Player('pink'), p2 = new Player('black'), width = 7, height = 6){
     this.width = width;
     this.height = height;
     this.board = [];
-    this.currPlayer = 1;// = [p1, p2]; //these are colors or color codes
+    this.playerArr = [p1, p2];// = [p1, p2]; //these are objs w/colors
+    this.currPlayer = this.playerArr[0];
     this.gameOver = 0; //0 = game's not over
 
     this.makeBoard();
@@ -39,11 +36,18 @@ class Game {
 
     const board = document.getElementById('board');
 
+    function removeAllChildNodes(parent) {
+      while (parent.firstChild) {
+          parent.removeChild(parent.firstChild);
+      }
+    }
+    removeAllChildNodes(board);//resets the game if you want a new game
+
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
 
-    const handleClickBound = this.handleClick.bind(this);//
+    
     top.addEventListener('click', this.handleClick.bind(this));//the DOM or window obj is calling the callback f() 
     //so 'this' may not refer to a class instance anymore
   
@@ -86,10 +90,9 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
 
-    piece.style.color = this.currPlayer.color;
+    piece.style.backgroundColor = this.currPlayer.color;
   
     //console.log(x, y) //err in cur ver if you rapid click on board then add a piece
     //^ x passed in can be NaN from evt handler
@@ -165,7 +168,7 @@ class Game {
     
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${this.currPlayer} won!`);
+      return this.endGame(`Player ${this.currPlayer.color} won!`);
     }
     
     // check for tie
@@ -174,7 +177,7 @@ class Game {
     }
       
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = this.currPlayer === this.playerArr[0] ? this.playerArr[1] : this.playerArr[0];
   }
 
   /** endGame: announce game end */
@@ -196,8 +199,10 @@ document.querySelector('button').addEventListener('click', (evt) => {
   evt.preventDefault();
   const player1 = new Player(document.querySelector('#p1').value);
   const player2 = new Player(document.querySelector('#p2').value);
+  
 
   new Game(player1, player2);
+
   alert `started`;
 });
   
