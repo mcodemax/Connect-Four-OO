@@ -13,16 +13,16 @@
 
 
 class Game {
-  constructor(width = 7, height = 6){
+  constructor(p1, p2, width = 7, height = 6){
     this.width = width;
     this.height = height;
     this.board = [];
-    this.currPlayer = 1;
+    this.currPlayer = 1;// = [p1, p2]; //these are colors or color codes
     this.gameOver = 0; //0 = game's not over
 
     this.makeBoard();
     this.makeHtmlBoard();
-    // this.findSpotForCol(10);
+    
   }
  /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
@@ -36,7 +36,6 @@ class Game {
   /** makeHtmlBoard: make HTML table and row of column tops. */
 
   makeHtmlBoard(){
-    if(this.gameOver) return alert(`The Game has ended`);
 
     const board = document.getElementById('board');
 
@@ -89,6 +88,8 @@ class Game {
     piece.classList.add('piece');
     piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
+
+    piece.style.color = this.currPlayer.color;
   
     //console.log(x, y) //err in cur ver if you rapid click on board then add a piece
     //^ x passed in can be NaN from evt handler
@@ -146,6 +147,7 @@ class Game {
 
   handleClick(evt) {
     // get x from ID of clicked cell
+    if(this.gameOver === 1) return;
    
     const x = +evt.target.id;
     if(isNaN(x)) return; //prevents err throwing if user clicks where not supposed to
@@ -183,9 +185,21 @@ class Game {
   }
 }
 
+class Player {
+  constructor(color){
+    this.color = color;
+  }
+}
   
 //document.querySelector('#startGame').addEventListener('click', new Game(7, 8));
-new Game(7, 8);
+document.querySelector('button').addEventListener('click', (evt) => {
+  evt.preventDefault();
+  const player1 = new Player(document.querySelector('#p1').value);
+  const player2 = new Player(document.querySelector('#p2').value);
+
+  new Game(player1, player2);
+  alert `started`;
+});
   
 
 
