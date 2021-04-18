@@ -90,7 +90,8 @@ class Game {
     piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
   
-    //console.log(piece) //err in cur ver if you rapid click on board then piece adders
+    //console.log(x, y) //err in cur ver if you rapid click on board then add a piece
+    //^ x passed in can be NaN from evt handler
     const spot = document.getElementById(`${y}-${x}`);
     spot.append(piece);
   }
@@ -147,6 +148,7 @@ class Game {
     // get x from ID of clicked cell
    
     const x = +evt.target.id;
+    //if(isNaN(x)) return; //prevents err throwing if user clicks where not supposed to
 
     // get next spot in column (if none, ignore click)
     
