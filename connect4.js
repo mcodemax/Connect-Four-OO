@@ -5,9 +5,6 @@
  * board fills (tie)
  */
 
-
-
-
 class Game {
   constructor(p1 = new Player('pink'), p2 = new Player('black'), width = 7, height = 6){
     this.width = width;
@@ -103,15 +100,10 @@ class Game {
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
-    
-
-
           // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
-      
-    
-
+  
     const _win = cells => {
       
       return cells.every(
